@@ -1,0 +1,12 @@
+.box {
+  overflow: auto;
+
+  .content {
+    .item {
+      //$item-height: 34px;
+      //height: $item-height;
+      //line-height: $item-height;
+      background: aqua;
+    }
+  }
+}
