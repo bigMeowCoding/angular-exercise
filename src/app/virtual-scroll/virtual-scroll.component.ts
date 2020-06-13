@@ -19,6 +19,8 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit, OnChanges 
   @Input()
   boxHeight = parseSizeAttr(this.itemHeight) * 10 + 'px';
   @Input()
+  visibleCount = 10;
+  @Input()
   previewRenderCount = 50;
   // 交互
   public contentHeight = null;
@@ -30,6 +32,7 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit, OnChanges 
   }
 
   ngOnInit(): void {
+    this.visibleData = this.makeVisibleData(0);
   }
 
   ngAfterViewInit(): void {
@@ -45,17 +48,26 @@ export class VirtualScrollComponent implements OnInit, AfterViewInit, OnChanges 
       })
     )
       .subscribe((e: Event) => {
-        const boxElement: any = e.target;
-        const scrollTop = boxElement.scrollTop;
-        let startIndex = (scrollTop / parseSizeAttr(this.itemHeight)) - this.previewRenderCount;
-        startIndex = Math.max(startIndex, 0);
-        let visibleCount = Math.ceil(parseSizeAttr(this.boxHeight) / parseSizeAttr(this.itemHeight)) + 2 * this.previewRenderCount;
-        visibleCount = Math.min(visibleCount, this.data.length);
-        console.log(startIndex, scrollTop);
-        this.transform = `translateY(${(startIndex * parseSizeAttr(this.itemHeight)) + 'px'})`;
-        console.log(this.transform);
-        this.visibleData = this.data.slice(startIndex, startIndex + visibleCount);
+        this.renderVisible(e.target);
       });
+
+  }
+
+  private renderVisible(boxElement) {
+    if (!boxElement) {
+      return;
+    }
+    const scrollTop = boxElement.scrollTop;
+    this.visibleData = this.makeVisibleData(scrollTop);
+  }
+
+  private makeVisibleData(scrollTop: number) {
+    let startIndex = (scrollTop / parseSizeAttr(this.itemHeight)) - this.previewRenderCount;
+    startIndex = Math.max(startIndex, 0);
+    let renderCount = this.visibleCount + 2 * this.previewRenderCount;
+    renderCount = Math.min(renderCount, this.data.length);
+    this.transform = `translateY(${(startIndex * parseSizeAttr(this.itemHeight)) + 'px'})`;
+    return this.data.slice(startIndex, startIndex + renderCount);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
