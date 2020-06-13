@@ -5,9 +5,12 @@
   "projects": {
     "angular-exercise": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
-      "sourceRoot": "src",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -119,6 +122,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-exercise"
+    }
+  },
+  "defaultProject": "angular-exercise",
+  "cli": {
+    "analytics": "48d47d66-96f8-42f6-bd20-a7f553bfddd2"
+  }
 }
