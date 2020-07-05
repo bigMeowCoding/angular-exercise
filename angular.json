@@ -8,7 +8,7 @@
       "root": "",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "less"
         }
       },      "sourceRoot": "src",
       "prefix": "app",
@@ -27,7 +27,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/theme.less"
             ],
             "scripts": []
           },
