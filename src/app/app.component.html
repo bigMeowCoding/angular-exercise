@@ -1,2 +1,14 @@
-<app-index></app-index>
+<ul nz-menu nzMode="horizontal">
+  <li nz-menu-item (click)="navigate('singer')">
+    singer
+  </li>
+  <li nz-menu-item
+  (click)="navigate('singer-list')">
+    sing-list
+  </li>
+  <li nz-menu-item (click)="navigate('recommend')">
+    recommend
+  </li>
+</ul>
 
+<router-outlet></router-outlet>
