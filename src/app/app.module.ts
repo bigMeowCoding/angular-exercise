@@ -11,11 +11,12 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ContentComponent } from './content/content.component';
+import { SkuComponent } from './sku/sku.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [AppComponent, ContentComponent],
+  declarations: [AppComponent, ContentComponent, SkuComponent],
   imports: [
     BrowserModule,
     FormsModule,
