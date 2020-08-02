@@ -4,8 +4,8 @@ export interface RenderData {
   weight: RenderDataItem[];
 }
 export interface RenderDataItem {
-  selected: boolean;
-  disabled: boolean;
+  selected?: boolean;
+  disabled?: boolean;
   id: string;
   value: string;
 }

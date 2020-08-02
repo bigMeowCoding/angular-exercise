@@ -1,20 +1,57 @@
 <div>
   公母：
-  <input type="button" class="sku" attr_id="10" value="公" />
-  <input type="button" class="sku" attr_id="11" value="母" />
+  <!-- <input type="button"  attr_id="10" value="公" /> -->
+  <!-- <input type="button" class="sku" attr_id="11" value="母" /> -->
+  <input
+    type="button"
+    class="sku"
+    [id]="item.id"
+    [disabled]="item.disabled"
+    [value]="item.value"
+    *ngFor="let item of data.gendar"
+    [ngClass]="{
+      'bh-sku-selected': item.selected
+    }"
+    (click)="selectGender(item)"
+  />
 </div>
-
 <div>
   重量：
-  <input type="button" class="sku" attr_id="20" value="100克" />
-  <input type="button" class="sku" attr_id="21" value="200克" />
+  <input
+    type="button"
+    class="sku"
+    [disabled]="item.disabled"
+    [id]="item.id"
+    [ngClass]="{
+      'bh-sku-selected': item.selected
+    }"
+    (click)="selectwight(item)"
+    [value]="item.value"
+    *ngFor="let item of data.weight"
+  />
+
+  <!-- <input type="button" class="sku" attr_id="20" value="100克" /> -->
+  <!-- <input type="button" class="sku" attr_id="21" value="200克" /> -->
 </div>
 
 <div>
   数量：
-  <input type="button" class="sku" attr_id="30" value="一对" />
-  <input type="button" class="sku" attr_id="31" value="两对" />
-  <input type="button" class="sku" attr_id="32" value="三对" />
+  <input
+    (click)="selectQuantity(item)"
+    type="button"
+    class="sku"
+    [disabled]="item.disabled"
+    [id]="item.id"
+    [value]="item.value"
+    [ngClass]="{
+      'bh-sku-selected': item.selected
+    }"
+    *ngFor="let item of data.quantity"
+  />
+
+  <!-- <input type="button" class="sku" attr_id="30" value="一对" /> -->
+  <!-- <input type="button" class="sku" attr_id="31" value="两对" /> -->
+  <!-- <input type="button" class="sku" attr_id="32" value="三对" /> -->
 </div>
 
 <div id="init_time">init sku time:</div>

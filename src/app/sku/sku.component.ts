@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { getObjKeys } from './common/utils';
-import { RenderData } from './common/interface';
+import { RenderData, RenderDataItem } from './common/interface';
 
 @Component({
   selector: 'app-sku',
@@ -16,9 +16,40 @@ export class SkuComponent implements OnInit {
     ['30', '31', '32'],
   ];
   public data: RenderData = {
-    gendar: [],
-    quantity: [],
-    weight: [],
+    gendar: [
+      {
+        id: '10',
+        value: '母',
+      },
+      {
+        id: '11',
+        value: '公',
+      },
+    ],
+    quantity: [
+      {
+        id: '30',
+        value: '一对',
+      },
+      {
+        id: '31',
+        value: '二对',
+      },
+      {
+        id: '32',
+        value: '三对',
+      },
+    ],
+    weight: [
+      {
+        id: '20',
+        value: '100克',
+      },
+      {
+        id: '21',
+        value: '200克',
+      },
+    ],
   };
   // 数据集, 一般由后台返回
   public storage = {
@@ -146,11 +177,82 @@ export class SkuComponent implements OnInit {
     }
     return aResult;
   }
+  public selectGender(item: RenderDataItem) {
+    this.clearSelectStatus('gendar');
+    this.selectItemCommon(item);
+  }
+  private clearSelectStatus(clearPart: string) {
+    this.data[clearPart].forEach((item) => {
+      item.selected = false;
+    });
+  }
+
+  public selectwight(item: RenderDataItem) {
+    this.clearSelectStatus('weight');
+    this.selectItemCommon(item);
+  }
+  public selectQuantity(item: RenderDataItem) {
+    this.clearSelectStatus('quantity');
+    this.selectItemCommon(item);
+  }
+
+  private selectItemCommon(item: RenderDataItem) {
+    item.selected = !item.selected;
+    debugger;
+    const selectedKeys = new Set(this.getAllSelectItemId());
+    for (const key of Object.keys(this.data)) {
+      let skuItems: RenderDataItem[] = this.data[key];
+      const selectedItem = this.getSelectedItem(skuItems);
+      let testIds = [];
+      if (selectedItem) {
+        for (const selectedkey of selectedKeys) {
+          if (selectedkey !== selectedItem.id) {
+            testIds.push(selectedkey);
+          }
+        }
+      } else {
+        testIds = Array.from(selectedKeys);
+      }
+      skuItems = skuItems.filter((skuItem) => {
+        return !selectedKeys.has(skuItem.id) && skuItem.id !== item.id;
+      });
+      for (const skuItem of skuItems) {
+        const attr = testIds
+          .concat(skuItem.id)
+          .sort((value1, value2) => {
+            return parseInt(value1, 10) - parseInt(value2, 10);
+          })
+          .join(';');
+        if (!this.SKUResult[attr] || !this.SKUResult[attr].count) {
+          skuItem.disabled = true;
+        } else {
+          skuItem.disabled = false;
+        }
+      }
+    }
+  }
+  private getSelectedItem(skuItems: RenderDataItem[]): RenderDataItem {
+    return skuItems.find((item) => {
+      return item.selected === true;
+    });
+  }
+
+  private getAllSelectItemId(): string[] {
+    const selectedKeys = [];
+    const keys = Object.keys(this.data);
+    for (const key of keys) {
+      this.data[key].forEach((dataItem) => {
+        if (dataItem.selected) {
+          selectedKeys.push(dataItem.id);
+        }
+      });
+    }
+    return selectedKeys;
+  }
+
   ngOnInit(): void {
     this.initSKU();
-    console.log(this.SKUResult);
-
-    //初始化用户选择事件
+    // 初始化用户选择事件
     // $(function () {
     //   initSKU();
     //   var endTime = new Date().getTime();
