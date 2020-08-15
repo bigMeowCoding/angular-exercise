@@ -69,7 +69,13 @@ export class SkuComponent implements OnInit {
   // 保存最后的组合结果信息
   public SKUResult = {};
   // 把组合的key放入结果集SKUResult
-  private addSKUResult(combArrItem, sku) {
+  private addSKUResult(
+    combArrItem,
+    sku: {
+      count: number;
+      price: number;
+    }
+  ) {
     const key = combArrItem.join(';');
     if (this.SKUResult[key]) {
       // SKU信息key属性
@@ -95,6 +101,7 @@ export class SkuComponent implements OnInit {
 
       // 对每个SKU信息key属性值进行拆分组合
       const combArr = this.combInArray(skuKeyAttrs);
+      console.log(combArr);
       for (const key of combArr) {
         this.addSKUResult(key, sku);
       }
@@ -104,6 +111,7 @@ export class SkuComponent implements OnInit {
         prices: [sku.price],
       };
     }
+    console.log(this.SKUResult);
   }
   /**
    * 从数组中生成指定长度的组合
@@ -177,6 +185,7 @@ export class SkuComponent implements OnInit {
     }
     return aResult;
   }
+  
   public selectGender(item: RenderDataItem) {
     this.clearSelectStatus('gendar');
     this.selectItemCommon(item);
@@ -198,7 +207,6 @@ export class SkuComponent implements OnInit {
 
   private selectItemCommon(item: RenderDataItem) {
     item.selected = !item.selected;
-    debugger;
     const selectedKeys = new Set(this.getAllSelectItemId());
     for (const key of Object.keys(this.data)) {
       let skuItems: RenderDataItem[] = this.data[key];
@@ -252,92 +260,5 @@ export class SkuComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSKU();
-    // 初始化用户选择事件
-    // $(function () {
-    //   initSKU();
-    //   var endTime = new Date().getTime();
-    //   $('#init_time').text('init sku time: ' + (endTime - startTime) + ' ms');
-    //   $('.sku')
-    //     .each(function () {
-    //       var self = $(this);
-    //       var attr_id = self.attr('attr_id');
-    //       if (!SKUResult[attr_id]) {
-    //         self.attr('disabled', 'disabled');
-    //       }
-    //     })
-    //     .click(function () {
-    //       var self = $(this);
-
-    //       //选中自己，兄弟节点取消选中
-    //       self
-    //         .toggleClass('bh-sku-selected')
-    //         .siblings()
-    //         .removeClass('bh-sku-selected');
-
-    //       //已经选择的节点
-    //       var selectedObjs = $('.bh-sku-selected');
-
-    //       if (selectedObjs.length) {
-    //         //获得组合key价格
-    //         var selectedIds = [];
-    //         selectedObjs.each(function () {
-    //           selectedIds.push($(this).attr('attr_id'));
-    //         });
-    //         selectedIds.sort(function (value1, value2) {
-    //           return parseInt(value1) - parseInt(value2);
-    //         });
-    //         var len = selectedIds.length;
-    //         var prices = SKUResult[selectedIds.join(';')].prices;
-    //         var maxPrice = Math.max.apply(Math, prices);
-    //         var minPrice = Math.min.apply(Math, prices);
-    //         $('#price').text(
-    //           maxPrice > minPrice ? minPrice + '-' + maxPrice : maxPrice
-    //         );
-
-    //         //用已选中的节点验证待测试节点 underTestObjs
-    //         $('.sku')
-    //           .not(selectedObjs)
-    //           .not(self)
-    //           .each(function () {
-    //             var siblingsSelectedObj = $(this).siblings('.bh-sku-selected');
-    //             var testAttrIds = []; //从选中节点中去掉选中的兄弟节点
-    //             if (siblingsSelectedObj.length) {
-    //               var siblingsSelectedObjId = siblingsSelectedObj.attr(
-    //                 'attr_id'
-    //               );
-    //               for (var i = 0; i < len; i++) {
-    //                 selectedIds[i] != siblingsSelectedObjId &&
-    //                   testAttrIds.push(selectedIds[i]);
-    //               }
-    //             } else {
-    //               testAttrIds = selectedIds.concat();
-    //             }
-    //             testAttrIds = testAttrIds.concat($(this).attr('attr_id'));
-    //             testAttrIds.sort(function (value1, value2) {
-    //               return parseInt(value1) - parseInt(value2);
-    //             });
-    //             var SKU = SKUResult[testAttrIds.join(';')];
-    //             if (!SKU || SKU.count === 0) {
-    //               $(this)
-    //                 .attr('disabled', 'disabled')
-    //                 .removeClass('bh-sku-selected');
-    //             } else {
-    //               $(this).removeAttr('disabled');
-    //             }
-    //           });
-    //       } else {
-    //         //设置默认价格
-    //         $('#price').text('--');
-    //         //设置属性状态
-    //         $('.sku').each(function () {
-    //           SKUResult[$(this).attr('attr_id')]
-    //             ? $(this).removeAttr('disabled')
-    //             : $(this)
-    //                 .attr('disabled', 'disabled')
-    //                 .removeClass('bh-sku-selected');
-    //         });
-    //       }
-    //     });
-    // });
   }
 }
