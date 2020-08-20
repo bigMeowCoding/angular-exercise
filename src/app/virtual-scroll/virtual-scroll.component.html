@@ -1,0 +1,11 @@
+<div class="box" #box [style.height]="boxHeight">
+  <div class="content" [style.height]="contentHeight">
+    <div class="content-wrapper" [style.transform]="transform">
+      <div *ngFor="let item of visibleData"
+           class="item"
+           [style.height]="itemHeight">
+        {{item.content}}
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,8 @@
         "@schematics/angular:component": {
           "style": "less"
         }
-      },      "sourceRoot": "src",
+      },
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
