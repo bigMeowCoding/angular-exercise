@@ -10,13 +10,13 @@ import { zh_CN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
-import { ContentComponent } from './content/content.component';
-import { SkuComponent } from './sku/sku.component';
+import { VirtualScrollComponent } from './virtual-scroll/virtual-scroll.component';
+import {SingerListComponent} from './singer-list/singer-list.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [AppComponent, ContentComponent, SkuComponent],
+  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent],
   imports: [
     BrowserModule,
     FormsModule,
