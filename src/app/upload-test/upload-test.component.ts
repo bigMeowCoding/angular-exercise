@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UploadChangeParam, UploadFile } from 'ng-zorro-antd';
+import { UploadServiceService } from './upload-service.service';
 
 @Component({
   selector: 'app-upload-test',
@@ -6,18 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./upload-test.component.scss'],
 })
 export class UploadTestComponent implements OnInit {
-  constructor() {}
+  fileList: File[] = [];
 
-  ngOnInit(): void {
+  constructor(private service: UploadServiceService) {}
+
+  ngOnInit(): void {}
+  private listenInputLoad() {
     document.getElementById('upload').addEventListener('change', () => {
-      console.time('use');
-
       const start = new Date().getTime();
-      console.log('start', start);
-
       const allFiles = Array.from(
         // @ts-ignore
-
         document.getElementById('upload').files
       ).filter((file) => {
         // @ts-ignore
@@ -29,11 +29,9 @@ export class UploadTestComponent implements OnInit {
           name.endsWith('.jpeg')
         );
       });
-
-      const all = allFiles.length;
+      console.log(allFiles);
+      const len = allFiles.length;
       let index = 0;
-      console.log('all', all);
-
       function loopLoad() {
         const file = allFiles[index];
         const img = document.createElement('img');
@@ -45,7 +43,7 @@ export class UploadTestComponent implements OnInit {
         //   fr.readAsDataURL(file);
 
         img.src = window.URL.createObjectURL(file);
-        document.body.appendChild(img);
+        // document.body.appendChild(img);
         img.onerror = () => {
           console.log('error', file);
           console.log('end', new Date().getTime() - start);
@@ -55,7 +53,7 @@ export class UploadTestComponent implements OnInit {
           console.log('end', new Date().getTime() - start);
         };
         index++;
-        if (index >= all) {
+        if (index >= len) {
           // @ts-ignore
           console.timeEnd('use');
         } else {
@@ -64,18 +62,47 @@ export class UploadTestComponent implements OnInit {
       }
 
       loopLoad();
-      //   .forEach((file) => {
-      //     const img = document.createElement("img");
-      //     var fr = new FileReader();
-      //     fr.onload = function () {
-      //       img.src = this.result;
-      //       div.appendChild(img);
-      //       document.body.appendChild(div);
-      //     };
-      //     fr.readAsDataURL(value);
-      //     div.textContent = file.webkitRelativePath || file.name;
-      //     document.getElementById("preview").appendChild(img);
-      //   });
     });
+  }
+
+  // public beforeUpload = (file: File) => {
+  //   console.log(file);
+  //   if (
+  //     file.name.endsWith('.png') ||
+  //     file.name.endsWith('.jpg') ||
+  //     file.name.endsWith('.jpeg')
+  //   ) {
+  //     if (!this.fileList) {
+  //       this.fileList = [file];
+  //     } else {
+  //       this.fileList.push(file);
+  //     }
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
+  clickButton() {
+    console.log(this.fileList);
+    const fr = new FileReader();
+    const fd = new FormData();
+    // @ts-ignore
+    fr.readAsDataURL(this.fileList[0] as any);
+    // fd.append('file', this.fileList[0]);
+    fr.onload = (data) => {
+      // @ts-ignore
+      this.service.upload(fr.result).subscribe(
+        (a) => {
+          console.log(a);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    };
+  }
+
+  uploadChange(e: UploadChangeParam) {
+    console.log(e);
   }
 }

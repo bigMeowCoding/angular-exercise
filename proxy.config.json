@@ -1,0 +1,9 @@
+{
+  "/sc": {
+    "target": "http://114.215.145.124",
+    "changeOrigin": true,
+    "headers": {
+      "Cookie": "SESSION=NTM1M2FlYzgtZjg2Yy00OTdjLWJmZjctNjBmNDQ0OGFlMWRk"
+    }
+  }
+}

@@ -1,9 +1,19 @@
 <input
-  accept="image/png,image/jpg"
   type="file"
   multiple
   webkitdirectory
   id="upload"
 />
+<!--<nz-upload-->
+<!--  [nzDirectory]="true"-->
+<!--  [nzShowUploadList]="false"-->
+<!--  (nzChange)="uploadChange($event)"-->
+<!--&gt;-->
+<!--  <button nz-button>-->
+<!--    <span>-->
+<!--      从本地选择图片-->
+<!--    </span>-->
+<!--  </button>-->
+<!--</nz-upload>-->
 <div id="preview"></div>
-div
+<button (click)="clickButton()">button</button>
