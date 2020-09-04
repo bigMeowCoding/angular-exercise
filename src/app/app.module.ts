@@ -12,17 +12,12 @@ import zh from '@angular/common/locales/zh';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { VirtualScrollComponent } from './virtual-scroll/virtual-scroll.component';
 import { SingerListComponent } from './singer-list/singer-list.component';
-import { SkuComponent } from './sku/sku.component';
+import { UploadTestComponent } from './upload-test/upload-test.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    VirtualScrollComponent,
-    SkuComponent,
-    SingerListComponent,
-  ],
+  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent, UploadTestComponent],
   imports: [
     BrowserModule,
     FormsModule,
