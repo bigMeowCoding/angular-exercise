@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UploadChangeParam, UploadFile } from 'ng-zorro-antd';
+import { UploadChangeParam, UploadFile, ZipButtonOptions } from 'ng-zorro-antd';
 import { UploadServiceService } from './upload-service.service';
 
 @Component({
@@ -81,6 +81,9 @@ export class UploadTestComponent implements OnInit {
   //   }
   //   return false;
   // };
+  options: ZipButtonOptions = {
+    directory: true,
+  };
 
   clickButton() {
     console.log(this.fileList);

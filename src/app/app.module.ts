@@ -13,11 +13,12 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { VirtualScrollComponent } from './virtual-scroll/virtual-scroll.component';
 import { SingerListComponent } from './singer-list/singer-list.component';
 import { UploadTestComponent } from './upload-test/upload-test.component';
+import { UploadButtonComponent } from './common/component/upload-button/upload-button.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent, UploadTestComponent],
+  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent, UploadTestComponent, UploadButtonComponent],
   imports: [
     BrowserModule,
     FormsModule,
