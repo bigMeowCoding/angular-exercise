@@ -17,7 +17,8 @@
 <!--</nz-upload>-->
 <div id="preview"></div>
 <!--<button (click)="clickButton()">button</button>-->
-<div app-upload-button [options]="options">
+<div app-upload-button [options]="options" (uploadChange)="uploadChange($event)">
   <div>
-  upload button
-</div></div>
+    upload button
+  </div>
+</div>

@@ -2,12 +2,14 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
+  Output,
   SimpleChange,
   SimpleChanges,
   ViewChild,
@@ -35,13 +37,15 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
   // region: styles
   private prefixCls = 'ant-upload';
   @ViewChild('file') file: ElementRef;
-  @ViewChild('box')box:ElementRef
+  @ViewChild('box') box: ElementRef;
 
   // region: fields
   @Input() classes: {} = {};
   @Input() options: ZipButtonOptions = {};
-
+  @Output()
+  uploadChange = new EventEmitter<FileList>();
   // endregion
+  private start: number;
   @HostListener('click')
   onClick(): void {
     console.log('click');
@@ -86,11 +90,52 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
     if (this.options.disabled) {
       return;
     }
+    this.start = new Date().getTime();
     const hie = e.target as HTMLInputElement;
-    this.uploadFiles(hie.files);
+    const files = Array.from(hie.files).filter((file) => {
+      // @ts-ignore
+      const name = (file.webkitRelativePath || file.name).toLowerCase();
+
+      return (
+        name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg')
+      );
+    });
+
+    this.loopLoad(files);
+    // this.uploadChange.emit(JSON.parse(JSON.stringify(hie.files)));
+    // this.uploadFiles(hie.files);
     hie.value = '';
   }
+  public loopLoad(files: File[]) {
+    const promises: Promise<boolean>[] = [];
+    for (const file of files) {
+      promises.push(this.loadImg(file));
+    }
+    Promise.all(promises).then(
+      (data) => {
+        console.log(data);
+        console.log((new Date().getTime() - this.start) / 1000);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+  private loadImg(file: File): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const img = document.createElement('img');
 
+      img.src = window.URL.createObjectURL(file);
+      // document.body.appendChild(img);
+      img.onerror = (e) => {
+        reject(e);
+      };
+      img.onload = () => {
+        // console.log(img.naturalWidth, img.naturalHeight);
+        resolve();
+      };
+    });
+  }
   // tslint:disable-next-line:no-any
   private traverseFileTree(files: any): void {
     // tslint:disable-next-line:no-any variable-name

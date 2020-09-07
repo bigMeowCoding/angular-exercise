@@ -105,7 +105,7 @@ export class UploadTestComponent implements OnInit {
     };
   }
 
-  uploadChange(e: UploadChangeParam) {
+  uploadChange(e) {
     console.log(e);
   }
 }
