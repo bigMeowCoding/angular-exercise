@@ -116,11 +116,11 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
   }
   public async loopLoad(files: File[], count = 1000): Promise<boolean[]> {
     if (files.length <= count) {
-      return this.loadAssignCountImages(files).catch((error) => {
+      return this.batchLoadImages(files).catch((error) => {
         throw error;
       });
     } else {
-      const data = await this.loadAssignCountImages(
+      const data = await this.batchLoadImages(
         files.slice(0, count)
       ).catch((error) => {
         throw error;
@@ -136,7 +136,7 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public loadAssignCountImages(files: File[]): Promise<boolean[]> {
+  public batchLoadImages(files: File[]): Promise<boolean[]> {
     const promises: Promise<boolean>[] = [];
     for (let i = 0; i < files.length; i++) {
       promises.push(this.loadImg(files[i]));
