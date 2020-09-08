@@ -100,18 +100,8 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
         name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg')
       );
     });
-
-    this.loopLoad(files);
-    // this.uploadChange.emit(JSON.parse(JSON.stringify(hie.files)));
-    // this.uploadFiles(hie.files);
-    hie.value = '';
-  }
-  public loopLoad(files: File[]) {
-    const promises: Promise<boolean>[] = [];
-    for (const file of files) {
-      promises.push(this.loadImg(file));
-    }
-    Promise.all(promises).then(
+    console.log(files.length);
+    this.loopLoad(files).then(
       (data) => {
         console.log(data);
         console.log((new Date().getTime() - this.start) / 1000);
@@ -120,6 +110,48 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
         console.error(error);
       }
     );
+    // this.uploadChange.emit(JSON.parse(JSON.stringify(hie.files)));
+    // this.uploadFiles(hie.files);
+    hie.value = '';
+  }
+  public async loopLoad(files: File[], count = 1000): Promise<boolean[]> {
+    if (files.length <= count) {
+      return this.loadAssignCountImages(files).catch((error) => {
+        throw error;
+      });
+    } else {
+      const data = await this.loadAssignCountImages(
+        files.slice(0, count)
+      ).catch((error) => {
+        throw error;
+      });
+      return this.loopLoad(files.slice(count)).then(
+        (result) => {
+          return data.concat(result);
+        },
+        (error) => {
+          throw error;
+        }
+      );
+    }
+  }
+
+  public loadAssignCountImages(files: File[]): Promise<boolean[]> {
+    const promises: Promise<boolean>[] = [];
+    for (let i = 0; i < files.length; i++) {
+      promises.push(this.loadImg(files[i]));
+    }
+    return new Promise((resolve, reject) => {
+      Promise.all(promises).then(
+        (data) => {
+          resolve(data);
+        },
+        (error) => {
+          console.error(error);
+          reject(error);
+        }
+      );
+    });
   }
   private loadImg(file: File): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -132,7 +164,7 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
       };
       img.onload = () => {
         // console.log(img.naturalWidth, img.naturalHeight);
-        resolve();
+        resolve(img.naturalWidth >= 200);
       };
     });
   }
