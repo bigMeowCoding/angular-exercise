@@ -14,11 +14,13 @@ import { VirtualScrollComponent } from './virtual-scroll/virtual-scroll.componen
 import { SingerListComponent } from './singer-list/singer-list.component';
 import { UploadTestComponent } from './upload-test/upload-test.component';
 import { UploadButtonComponent } from './common/component/upload-button/upload-button.component';
+import { TimeLineComponent } from './common/component/time-line/time-line.component';
+import { TimeLineTestComponent } from './time-line-test/time-line-test.component';
 
 registerLocaleData(zh);
 
 @NgModule({
-  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent, UploadTestComponent, UploadButtonComponent],
+  declarations: [AppComponent, VirtualScrollComponent, SingerListComponent, UploadTestComponent, UploadButtonComponent, TimeLineComponent, TimeLineTestComponent],
   imports: [
     BrowserModule,
     FormsModule,

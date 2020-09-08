@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-time-line',
   templateUrl: './time-line.component.html',
-  styleUrls: ['./time-line.component.scss']
+  styleUrls: ['./time-line.component.scss'],
 })
 export class TimeLineComponent implements OnInit {
-
-  constructor() { }
+  @Input()
+  public data: number[] = [];
+  constructor() {}
 
   ngOnInit(): void {
   }
