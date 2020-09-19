@@ -24,6 +24,7 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
+import { chunk } from '../../utils';
 
 @Component({
   selector: '[app-upload-button]',
@@ -114,26 +115,32 @@ export class UploadButtonComponent implements OnInit, OnChanges, OnDestroy {
     // this.uploadFiles(hie.files);
     hie.value = '';
   }
+
   public async loopLoad(files: File[], count = 1000): Promise<boolean[]> {
-    if (files.length <= count) {
-      return this.batchLoadImages(files).catch((error) => {
+    const batchFilesArray = chunk(files, count);
+    let data = [];
+    for (const batchFiles of batchFilesArray) {
+      const result = await this.batchLoadImages(batchFiles).catch((error) => {
         throw error;
       });
-    } else {
-      const data = await this.batchLoadImages(
-        files.slice(0, count)
-      ).catch((error) => {
-        throw error;
-      });
-      return this.loopLoad(files.slice(count)).then(
-        (result) => {
-          return data.concat(result);
-        },
-        (error) => {
-          throw error;
-        }
-      );
+      data = data.concat(result);
     }
+    return data;
+    // if (files.length <= count) {
+    //   return this.batchLoadImages(files).catch((error) => {
+    //     throw error;
+    //   });
+    // } else {
+    //
+    //   return this.loopLoad(files.slice(count)).then(
+    //     (result) => {
+    //       return data.concat(result);
+    //     },
+    //     (error) => {
+    //       throw error;
+    //     }
+    //   );
+    // }
   }
 
   public batchLoadImages(files: File[]): Promise<boolean[]> {

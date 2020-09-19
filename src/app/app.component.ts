@@ -6,4 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  selectedValue: any;
+
+  change($event: any) {
+    console.log($event);
+  }
 }
